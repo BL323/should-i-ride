@@ -76,3 +76,6 @@ typings/
 .fusebox/
 .DS_Store
 .netlify/state.json
+
+# dist
+/dist
