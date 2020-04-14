@@ -1,18 +1,17 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Should I Ride?" />
+    <Layout />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import HelloWorld from "./components/HelloWorld.vue";
+import Layout from "./components/Layout.vue"
 
 export default Vue.extend({
   name: "App",
   components: {
-    HelloWorld
+    Layout
   }
 });
 </script>
