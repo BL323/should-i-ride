@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-for="forecast in forecasts" :key="forecast.time">
-            <Weather v-bind:forecast="forecast" />
+            <Weather class="weather-display" v-bind:forecast="forecast" />
         </div>
     </div>
 </template>
@@ -28,5 +28,7 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-
+ .weather-display {
+     margin-bottom: 5px;
+ }
 </style>
