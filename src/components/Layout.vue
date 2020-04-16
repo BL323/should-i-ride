@@ -2,9 +2,9 @@
     <div class="container">
         <div id="main-content">
             <h2>Should I Ride?</h2>
-            <Transport id="transport" />
+            <transport id="transport" />
             <location />
-            <Forecast />
+            <forecast />
         </div>
         <div id="footer">
         </div>
@@ -29,15 +29,24 @@ h2 {
 
 .container {
     display: grid;
-    grid-template-columns: 15% 70% 15%;
+    grid-template-columns: 5% auto 5%;
     grid-template-rows: 10px auto 5px; 
     grid-template-areas: "hd hd hd"
                          "col1 main col2"
                          "ft ft ft";
+    max-width: 500px;
+    margin: auto;
+   }
+
+@media (min-width: $small-screen) {
+.container {
+    grid-template-columns: 15% auto 15%;
+}
 }
 
 #main-content {
     grid-area: main;
+    margin: auto;
 }
 
 #footer {

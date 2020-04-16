@@ -1,7 +1,12 @@
 <template>
     <div>
-        <div v-for="forecast in forecasts" :key="forecast.time">
-            <Weather class="weather-display" v-bind:forecast="forecast" />
+        <p>Latitude: {{location.latitude}} Longitude: {{location.longitude}} </p>
+        <div v-for="forecast in forecasts" :key="forecast.timestamp">
+            <weather 
+                class="weather-display" 
+                v-bind:forecast="forecast" 
+                v-bind:sunrise="location.sunrise"
+                v-bind:sunset="location.sunset" />
         </div>
     </div>
 </template>
@@ -9,20 +14,23 @@
 <script lang="ts">
 import Vue from "vue";
 import Weather from "./Weather.vue";
-import { getForecastAsync, Forecast } from "../api/Forecast";
+import { getForecastAsync, LocationForecast, Forecast, Location } from "../api/Forecast";
 
+let location: Location;
 const forecasts: Array<Forecast> = [];
 
 export default Vue.extend({
     components: { Weather },
     data: () => {
         return {
-            forecasts
+            forecasts,
+            location
         }
     },
     created: async function() {
-        const forecastData: Array<Forecast> = await getForecastAsync();
-        this.forecasts = forecastData;
+        const LocationForecast: LocationForecast = await getForecastAsync();
+        this.forecasts = LocationForecast.forecast;
+        this.location = LocationForecast.location;
     }
 })
 </script>

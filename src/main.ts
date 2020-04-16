@@ -3,12 +3,12 @@ import App from "./App.vue";
 import router from "./router";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faWind, faThermometerHalf } from "@fortawesome/free-solid-svg-icons";
+import { faWind, faThermometerHalf, faSun, faMoon } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-library.add(faThermometerHalf, faWind)
+library.add(faThermometerHalf, faWind, faSun, faMoon);
 
-Vue.component('font-awesome-icon', FontAwesomeIcon)
+Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 
 Vue.config.productionTip = false;

@@ -1,15 +1,29 @@
 <template>
-    <div class="weather-container">
-        <p class="forecast-date">{{forecast.time | dateDisplay}}</p>
-        <p class="forecast-time">{{forecast.time | timeDisplay}}</p>
-        <p class="forecast-description">{{ forecast.description }}</p>
-        <p class="forecast-tempature">{{ forecast.temp | roundNumberDisplay}} °C</p>
-        <p class="forecast-tempatureicon"><font-awesome-icon icon="thermometer-half" /></p>
-        <p class="forecast-windspeedicon"><font-awesome-icon  icon="wind" /></p>
-        <p class="forecast-windspeed">{{ forecast.windSpeed | roundNumberDisplay }} mph  </p>
-        <p class="forecast-icon">
-            <img :src="forecast.icon | iconLink" :alt="forecast.description"/>
-        </p>
+    <div>
+        <div v-if="isPostSunrise">
+            <p class="sun-event">
+                <font-awesome-icon icon="sun" />
+                Sunrise {{ sunrise | timeDisplay }}
+            </p>
+        </div>
+        <div v-if="isPostSunset">
+            <p class="sun-event">
+                <font-awesome-icon icon="moon" />
+                Sunset {{ sunset | timeDisplay }}
+            </p>
+        </div>
+        <div class="weather-container">
+            <p class="forecast-date">{{forecast.time | dateDisplay}}</p>
+            <p class="forecast-time">{{forecast.time | timeDisplay}} : {{ forecast.summary }}</p>
+            <p class="forecast-description">{{ forecast.description }}</p>
+            <p class="forecast-tempature">{{ forecast.temp | roundNumberDisplay}} °C</p>
+            <p class="forecast-tempatureicon"><font-awesome-icon icon="thermometer-half" /></p>
+            <p class="forecast-windspeedicon"><font-awesome-icon  icon="wind" /></p>
+            <p class="forecast-windspeed">{{ forecast.windSpeed | roundNumberDisplay }} mph  </p>
+            <p class="forecast-icon">
+                <img :src="forecast.icon | iconLink" :alt="forecast.description"/>
+            </p>
+        </div>
     </div>
 </template>
 
@@ -19,7 +33,9 @@ import { Forecast } from "../api/Forecast";
 
 export default Vue.extend({
     props: {
-        forecast: { type: Object }
+        forecast: { type: Object },
+        sunrise: { type: Date },
+        sunset: { type: Date }
     },
     filters: {
         dateDisplay: function(dateTime: Date): string {
@@ -29,7 +45,7 @@ export default Vue.extend({
         },
         timeDisplay: function(dateTime: Date): string {
             const day = dateTime.getDay();
-            const options = { };
+            const options = { hour: 'numeric', minute: 'numeric' };
             return dateTime.toLocaleTimeString("en-GB", options);
         },
         iconLink: function(icon: string): string {
@@ -38,6 +54,24 @@ export default Vue.extend({
         roundNumberDisplay: function(raw: number) {
             return Math.round(raw);
         }
+    },
+    computed: {
+        isPostSunrise: function(): boolean {
+            const forecastTm = (this.forecast as Forecast).time;
+            const sunriseTm = new Date(this.sunrise);
+
+            const diffHours = forecastTm.getHours() - sunriseTm.getHours();
+            const diffWithOffset = diffHours - forecastTm.getTimezoneOffset();
+            return diffHours === 1;
+        },
+        isPostSunset: function(): boolean {
+            const forecastTm = (this.forecast as Forecast).time;
+            const sunsetTm = new Date(this.sunset);
+
+            const diffHours = forecastTm.getHours() - sunsetTm.getHours();
+            const diffWithOffset = diffHours - forecastTm.getTimezoneOffset();
+            return diffHours === 1;
+        },
     }
 })
 </script>
@@ -97,5 +131,12 @@ export default Vue.extend({
 .forecast-icon {
     grid-area: ic;
     margin-top: -5px;
+}
+
+.sun-event {
+    text-align: left;
+    margin-left: 60px;
+    font-size: 1.5em;
+
 }
 </style>
