@@ -1,5 +1,12 @@
 <template>
   <div id="app">
+    <!-- <font-awesome-icon id="theme-selector" @click="styleIt" icon="circle" /> -->
+    <div id="theme-selector" 
+        :class="{ 
+            'light-theme': !lightMode,
+            'dark-theme': lightMode,
+        }"
+        @click="styleIt" />
     <Layout />
   </div>
 </template>
@@ -12,6 +19,27 @@ export default Vue.extend({
   name: "App",
   components: {
     Layout
+  },
+  data: () => {
+      return {
+        lightMode: true
+      };
+  },
+  methods: {
+      styleIt: function() {
+          this.lightMode = !this.lightMode;
+          const appElement = document.querySelector("#app");
+        
+          if(this.lightMode) {
+            document.body.style.background = "white";
+            appElement?.setAttribute("style", "color: #2c3e50; background: white");
+          }
+
+          if(!this.lightMode) { // dark mode
+            document.body.style.background = "#2c3e50";
+            appElement?.setAttribute("style", "color: white; background: #2c3e50");
+          }
+      }
   }
 });
 </script>
@@ -26,4 +54,41 @@ export default Vue.extend({
   background: $base-colour;
   margin-top: 60px;
 }
+
+.light-theme {
+    color: #2c3e50; 
+    background: white
+}
+
+.dark-theme {
+    color: white; 
+    background: #2c3e50
+}
+
+#theme-selector{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    float: right;
+
+
+    // position: absoulte;
+    // bottom: 0;
+    // width: 40px;
+    // height: 40px;
+    // border: 1px solid red;
+    // -webkit-text-stroke: 10px green;
+
+    & :hover {
+        background: blue;
+    }
+}
+
+#theme-selector :hover {
+    background: green;
+}
+
+
+
+
 </style>
