@@ -1,6 +1,5 @@
 <template>
     <div>
-        <p>Latitude: {{location.latitude}} Longitude: {{location.longitude}} </p>
         <div v-for="forecast in forecasts" :key="forecast.timestamp">
             <weather 
                 class="weather-display" 
@@ -27,10 +26,43 @@ export default Vue.extend({
             location
         }
     },
+    computed: {
+        getLatitude: function() {
+            if(location == null || location.latitude == null)
+                return '';
+
+            return location.latitude;
+        },
+        getLongitude: function() {
+            if(location == null || location.longitude == null)
+                return '';
+
+            return location.longitude;
+        }
+    },
     created: async function() {
         const LocationForecast: LocationForecast = await getForecastAsync();
-        this.forecasts = LocationForecast.forecast;
         this.location = LocationForecast.location;
+        this.forecasts = 
+            this.onlyDayLight(
+                LocationForecast.forecast,
+                this.location.sunrise,
+                this.location.sunset);
+        
+    },
+    methods: {
+        onlyDayLight: function(
+            forecasts: Forecast[],
+            sunrise: Date,
+            sunset: Date): Forecast[] {
+                return forecasts.filter((forecast: Forecast) => {
+                    const sunriseHours = sunrise.getHours();
+                    const sunsetHours = sunset.getHours();
+                    const forecastHours = forecast.time.getHours();
+                    return sunriseHours <= forecastHours 
+                        && forecastHours <= sunsetHours;
+                });
+        }
     }
 })
 </script>
