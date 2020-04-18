@@ -71,24 +71,10 @@ export default Vue.extend({
     border-radius: 50%;
     float: right;
 
-
-    // position: absoulte;
-    // bottom: 0;
-    // width: 40px;
-    // height: 40px;
-    // border: 1px solid red;
-    // -webkit-text-stroke: 10px green;
-
-    & :hover {
-        background: blue;
+    &:hover {
+        box-shadow: 0 0 0 2px gray;
+        transition: .5s ease;
     }
 }
-
-#theme-selector :hover {
-    background: green;
-}
-
-
-
 
 </style>

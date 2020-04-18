@@ -8,17 +8,18 @@
     </div>
     <div class="weather-container">
       <p class="forecast-date">{{forecast.time | dateDisplay}}</p>
-      <p class="forecast-time">{{forecast.time | timeDisplay}} : {{ forecast.summary }}</p>
-      <p class="forecast-description">{{ diffTm }}</p>
-      <!-- <p class="forecast-description">{{ forecast.description }}</p> -->
-      <p class="forecast-tempature">{{ forecast.temp | roundNumberDisplay}} °C</p>
-      <p class="forecast-tempatureicon">
+      <p class="forecast-time" :class="{'is-invalid': isInvalidWeather }">
+      {{forecast.time | timeDisplay}} : {{ forecast.summary }}</p>
+      <p class="forecast-description">{{ forecast.description }}</p>
+      <p class="forecast-tempature" :class="{'is-invalid': isInvalidTemp}">
+          {{ forecast.temp | roundNumberDisplay}} °C</p>
+      <p class="forecast-tempatureicon" :class="{'is-invalid': isInvalidTemp}">
         <font-awesome-icon icon="thermometer-half" />
       </p>
-      <p class="forecast-windspeedicon">
+      <p class="forecast-windspeed" :class="{'is-invalid': isInvalidWind}">{{ forecast.windSpeed | roundNumberDisplay }} mph</p>
+      <p class="forecast-windspeedicon" :class="{'is-invalid': isInvalidWind}">
         <font-awesome-icon icon="wind" />
       </p>
-      <p class="forecast-windspeed">{{ forecast.windSpeed | roundNumberDisplay }} mph</p>
       <p class="forecast-icon">
         <img :src="forecast.icon | iconLink" :alt="forecast.description" />
       </p>
@@ -34,8 +35,14 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Forecast } from "../api/Forecast";
-
+import { Forecast } from "../model/Models";
+import {
+  isValidMinTempFn,
+  isValidMaxTempFn,
+  isValidWindSpeedFn,
+  isValidWeatherFn,
+  conditions
+} from "../model/UsableConditions";
 export default Vue.extend({
   props: {
     forecast: { type: Object },
@@ -61,6 +68,16 @@ export default Vue.extend({
     }
   },
   computed: {
+    isInvalidTemp: function(): boolean {
+      return !(isValidMinTempFn(this.forecast.temp, conditions.minTemp)
+        && isValidMaxTempFn(this.forecast.temp, conditions.maxTemp));
+    },
+    isInvalidWind: function(): boolean {
+        return !isValidWindSpeedFn(this.forecast.windSpeed, conditions.maxWindSpeed);
+    },
+    isInvalidWeather: function(): boolean {
+        return !isValidWeatherFn(this.forecast.description);
+    },
     isPostSunrise: function(): boolean {
       const forecastTm = (this.forecast as Forecast).time;
       const sunriseTm = new Date(this.sunrise);
@@ -71,17 +88,10 @@ export default Vue.extend({
         (diffHours === 1 && diffMinutes !== 0)
       );
     },
-    diffTm: function(): string {
-      const forecastTm = (this.forecast as Forecast).time;
-      const sunsetTm = new Date(this.sunset);
-      const diffHours = sunsetTm.getHours() - forecastTm.getHours() ;
-      const diffMinutes = sunsetTm.getMinutes() - forecastTm.getMinutes();
-      return `H:${diffHours}, M:${diffMinutes}`;
-    },
     isPreSunset: function(): boolean {
       const forecastTm = (this.forecast as Forecast).time;
       const sunsetTm = new Date(this.sunset);
-      const diffHours = sunsetTm.getHours() - forecastTm.getHours() ;
+      const diffHours = sunsetTm.getHours() - forecastTm.getHours();
       const diffMinutes = sunsetTm.getMinutes() - forecastTm.getMinutes();
       return (
         (diffHours === 0 && diffMinutes === 0) ||
@@ -154,5 +164,9 @@ export default Vue.extend({
   text-align: left;
   margin-left: 60px;
   font-size: 1.5em;
+}
+
+.is-invalid {
+    color: red;
 }
 </style>

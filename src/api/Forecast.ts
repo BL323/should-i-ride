@@ -1,26 +1,5 @@
 import fetch from "node-fetch";
-
-interface Location {
-  latitude: number;
-  longitude: number;
-  sunrise: Date;
-  sunset: Date;
-}
-
-interface Forecast {
-  timestamp: number;
-  time: Date;
-  windSpeed: number;
-  temp: number;
-  summary: string;
-  description: string;
-  icon: string;
-}
-
-interface LocationForecast {
-  location: Location;
-  forecast: Forecast[];
-}
+import { Location, Forecast, LocationForecast } from "../model/Models";
 
 function convertToLocalTime(unixTimeStamp: number): Date {
   let date = new Date(unixTimeStamp * 1000);
@@ -69,4 +48,4 @@ async function getForecastAsync(): Promise<LocationForecast> {
   return { forecast, location };
 }
 
-export { getForecastAsync, Forecast, Location, LocationForecast };
+export { getForecastAsync };

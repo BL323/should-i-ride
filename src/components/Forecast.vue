@@ -13,7 +13,8 @@
 <script lang="ts">
 import Vue from "vue";
 import Weather from "./Weather.vue";
-import { getForecastAsync, LocationForecast, Forecast, Location } from "../api/Forecast";
+import { getForecastAsync } from "../api/Forecast";
+import { Location, Forecast, LocationForecast } from "../model/Models";
 
 let location: Location;
 const forecasts: Array<Forecast> = [];

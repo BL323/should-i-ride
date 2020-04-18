@@ -2,7 +2,7 @@
     <div class="container">
         <div id="main-content">
 
-            <h2>Should I Ride?</h2>
+            <h2 class="title">Should I Ride?</h2>
             <transport id="transport" />
             <location />
             <overview />
