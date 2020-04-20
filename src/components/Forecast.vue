@@ -1,5 +1,6 @@
 <template>
     <div>
+        <overview :forecasts="forecasts" />
         <div v-for="forecast in forecasts" :key="forecast.timestamp">
             <weather 
                 class="weather-display" 
@@ -13,6 +14,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Weather from "./Weather.vue";
+import Overview from "./Overview.vue";
 import { getForecastAsync } from "../api/Forecast";
 import { Location, Forecast, LocationForecast } from "../model/Models";
 
@@ -20,7 +22,7 @@ let location: Location;
 const forecasts: Array<Forecast> = [];
 
 export default Vue.extend({
-    components: { Weather },
+    components: { Weather, Overview },
     data: () => {
         return {
             forecasts,

@@ -1,11 +1,9 @@
 <template>
     <div class="container">
         <div id="main-content">
-
             <h2 class="title">Should I Ride?</h2>
             <transport id="transport" />
             <location />
-            <overview />
             <forecast />
         </div>
         <div id="footer">
@@ -18,10 +16,9 @@ import Vue from 'vue';
 import Transport from "./Transport.vue";
 import Forecast from "./Forecast.vue";
 import Location from "./Location.vue";
-import Overview from "./Overview.vue";
 
 export default Vue.extend({
-    components: { Transport, Forecast, Location, Overview }
+    components: { Transport, Forecast, Location }
 })
 </script>
 

@@ -8,8 +8,11 @@
     </div>
     <div class="weather-container">
       <p class="forecast-date">{{forecast.time | dateDisplay}}</p>
-      <p class="forecast-time" :class="{'is-invalid': isInvalidWeather }">
-      {{forecast.time | timeDisplay}} : {{ forecast.summary }}</p>
+      <div class="headline">
+          <p class="forecast-time">{{forecast.time | timeDisplay}}</p>
+          <p class="forecast-summary" :class="{'is-invalid': isInvalidWeather }">
+          {{ forecast.summary }}</p>
+      </div>
       <p class="forecast-description">{{ forecast.description }}</p>
       <p class="forecast-tempature" :class="{'is-invalid': isInvalidTemp}">
           {{ forecast.temp | roundNumberDisplay}} °C</p>
@@ -51,12 +54,10 @@ export default Vue.extend({
   },
   filters: {
     dateDisplay: function(dateTime: Date): string {
-      const day = dateTime.getDay();
       const options = { weekday: "long", month: "long", day: "numeric" };
       return dateTime.toLocaleString("en-GB", options);
     },
     timeDisplay: function(dateTime: Date): string {
-      const day = dateTime.getDay();
       const options = { hour: "numeric", minute: "numeric" };
       return dateTime.toLocaleTimeString("en-GB", options);
     },
@@ -76,7 +77,7 @@ export default Vue.extend({
         return !isValidWindSpeedFn(this.forecast.windSpeed, conditions.maxWindSpeed);
     },
     isInvalidWeather: function(): boolean {
-        return !isValidWeatherFn(this.forecast.description);
+        return !isValidWeatherFn(this.forecast.summary);
     },
     isPostSunrise: function(): boolean {
       const forecastTm = (this.forecast as Forecast).time;
@@ -118,8 +119,23 @@ export default Vue.extend({
     "ic wnd wndic";
 }
 
+.headline {
+  display: flex;
+  grid-area: tm;
+  font-weight: bold;
+  margin-left: 15px;
+}
+
 .forecast-date {
   grid-area: hd;
+}
+
+.forecast-time {
+  margin-right: 15px;
+}
+
+.forecast-summary {
+  margin-right: 5px;
 }
 
 .forecast-date {
@@ -128,13 +144,9 @@ export default Vue.extend({
   margin-left: 10px;
 }
 
-.forecast-time {
-  grid-area: tm;
-  font-weight: bold;
-}
-
 .forecast-description {
   grid-area: desc;
+  margin-top: 10px !important;
 }
 
 .forecast-tempature {
@@ -157,7 +169,7 @@ export default Vue.extend({
 
 .forecast-icon {
   grid-area: ic;
-  margin-top: -5px;
+  margin-top: -15px !important;
 }
 
 .sun-event {
