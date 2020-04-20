@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h3><em>{{ numberOfUsableSlots }}</em> opportunities of usable riding<br>in the next <em>48</em> Hours.</h3>
+        <h3><em>{{ numberOfUsableSlots }}</em> slots of usable riding<br>in the next <em>48</em> Hours.</h3>
         <h3 v-if="!hasAnyValidConditions">It looks pretty grim out there. Time for a rest day 😴</h3>
         <h3 v-if="hasAnyValidConditions">Next slot: <em>{{ nextUsableSlot | dateTimeDisplay }}</em></h3> 
     </div>

@@ -6,30 +6,21 @@ const conditions: UsableCondition = {
   maxWindSpeed: 20
 };
 
-const isValidMinTempFn = function(
-  temp: number,
-  minTemp: number | null
+const isValidMinThreshold = function(
+  value: number,
+  threshold: number | null
 ): boolean {
-  if (minTemp === null) return true;
+  if (threshold === null) return true;
+  return Math.round(value) >= threshold;
+}
 
-  return Math.round(temp) > minTemp;
-};
-
-const isValidMaxTempFn = function(
-  temp: number,
-  maxTemp: number | null
+const isValidMaxThreshold = function(
+  value: number,
+  threshold: number | null
 ): boolean {
-  if (maxTemp === null) return true;
-  return Math.round(temp) <= maxTemp;
-};
-
-const isValidWindSpeedFn = function(
-  windSpeed: number,
-  maxWindSpeed: number | null
-): boolean {
-  if (maxWindSpeed == null) return true;
-  return Math.round(windSpeed) <= maxWindSpeed;
-};
+  if (threshold === null) return true;
+  return Math.round(value) <= threshold;
+}
 
 const isValidWeatherFn = function(
   description: string
@@ -54,9 +45,9 @@ const canIRideFn = function(
   if (conditions == null)
     throw new Error("A valid set of conditions must be supplied.");
 
-  if (!isValidMinTempFn(forecast.temp, conditions.minTemp)) return false;
-  if (!isValidMaxTempFn(forecast.temp, conditions.maxTemp)) return false;
-  if (!isValidWindSpeedFn(forecast.windSpeed, conditions.maxWindSpeed))
+  if (!isValidMinThreshold(forecast.temp, conditions.minTemp)) return false;
+  if (!isValidMaxThreshold(forecast.temp, conditions.maxTemp)) return false;
+  if (!isValidMaxThreshold(forecast.windSpeed, conditions.maxWindSpeed))
     return false;
   if (!isValidWeatherFn(forecast.summary))
     return false;
@@ -66,8 +57,7 @@ const canIRideFn = function(
 export {
   conditions,
   canIRideFn,
-  isValidMinTempFn,
-  isValidMaxTempFn,
-  isValidWindSpeedFn,
+  isValidMinThreshold,
+  isValidMaxThreshold,
   isValidWeatherFn
 };

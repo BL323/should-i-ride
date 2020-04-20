@@ -40,9 +40,8 @@
 import Vue from "vue";
 import { Forecast } from "../model/Models";
 import {
-  isValidMinTempFn,
-  isValidMaxTempFn,
-  isValidWindSpeedFn,
+  isValidMinThreshold,
+  isValidMaxThreshold,
   isValidWeatherFn,
   conditions
 } from "../model/UsableConditions";
@@ -70,11 +69,11 @@ export default Vue.extend({
   },
   computed: {
     isInvalidTemp: function(): boolean {
-      return !(isValidMinTempFn(this.forecast.temp, conditions.minTemp)
-        && isValidMaxTempFn(this.forecast.temp, conditions.maxTemp));
+      return !(isValidMinThreshold(this.forecast.temp, conditions.minTemp)
+        && isValidMaxThreshold(this.forecast.temp, conditions.maxTemp));
     },
     isInvalidWind: function(): boolean {
-        return !isValidWindSpeedFn(this.forecast.windSpeed, conditions.maxWindSpeed);
+        return !isValidMaxThreshold(this.forecast.windSpeed, conditions.maxWindSpeed);
     },
     isInvalidWeather: function(): boolean {
         return !isValidWeatherFn(this.forecast.summary);
