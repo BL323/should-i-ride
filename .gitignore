@@ -77,5 +77,6 @@ typings/
 .DS_Store
 .netlify/state.json
 
-
 dist/
+
+functions/search-location/locations.js
